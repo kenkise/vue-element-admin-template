@@ -1,9 +1,21 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Layout from '@/layout/index.vue';
-// import SidebarRouter from './modules/SidebarRouter';
 Vue.use(VueRouter);
 import nestedRouter from './modules/nested';
+
+//解决重复点击tabbar报错问题push
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  // console.log('push');
+  return originalPush.call(this, location).catch(err => err)
+}
+//解决重复点击tabbar报错问题replace
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location) {
+  // console.log('replace');
+  return originalReplace.call(this, location).catch(err => err);
+}
 
 // constantRoutes： 代表那些不需要动态判断权限的路由，如登录页、404、等通用页面。
 export const constantRoutes = [
@@ -50,16 +62,40 @@ export const constantRoutes = [
       {
         path: 'label',
         name: 'Label',
+        hidden:true,
         component: () => import('@/views/label/index'),
-        meta: { title: '标签管理', icon: 'el-icon-collection-tag' },
+        meta: { title: '标签管理', icon: 'el-icon-collection-tag',noKeepAlive:true, },
       },
     ],
   },
+  
+
+
+
   /** when your routing map is too long, you can split it into small modules **/
   // ...SidebarRouter,
 ];
 // asyncRoutes： 代表那些需求动态判断权限并通过 addRoutes 动态添加的页面。
-export const asyncRoutes = [nestedRouter];
+
+export const asyncRoutes = [
+  // 测试单页面
+  {
+    path:'/test',
+    component: Layout,
+    redirect:'/test/index',
+    children:[
+      {
+        path:'index',
+        name:'TestAlone',
+       component:()=>import('@/views/testAlone'),
+       meta:{title:'测试单页面页面',icon:'test'}
+      }
+    ]
+  },
+  /** when your routing map is too long, you can split it into small modules **/
+  nestedRouter
+]
+
 const router = new VueRouter({
   routes: constantRoutes,
 });

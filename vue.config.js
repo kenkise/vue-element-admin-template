@@ -1,8 +1,8 @@
+console.log('曹老板开源项目');
+
 module.exports = {
   configureWebpack: {
-    // webpack 配置
 
-    devtool: 'source-map',
   },
   devServer: {
     open: true, // npm run serve后自动打开页面

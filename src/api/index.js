@@ -7,7 +7,5 @@ export const ApiUrl = {
     INFO: '/userInfo',
     // 退出登陆
     LOGOUT: '/logout',
-    // 获取用户的菜单和按钮权限
-    GET_USER_MENT_LIST: `/getMentList`,
   },
 };

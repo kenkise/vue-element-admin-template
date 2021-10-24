@@ -1,3 +1,5 @@
+// 主体sidebar
+
 <template>
   <div id="sidebarStyle" :class="sidebar ? 'sidebarWidthall' : 'sidebarWidth'">
     <div :class="sidebar ? 'iconTit' : 'noiconTit'">
@@ -10,43 +12,29 @@
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      background-color="#001529"
+      :background-color="variables['menu-background']"
       unique-opened
-      text-color="#fff"
-      active-text-color="#ffd04b"
+      :text-color="variables['menu-color']"
+      :active-text-color="variables[' menu-color-active']"
       router
       :collapse-transition="false"
       :collapse="!sidebar"
     >
-      <template v-for="(item, index) in $router.options.routes">
-        <template v-if="item.children && item.children.length >= 1">
-          <el-submenu :index="item.path" :key="index">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">{{ item.name }}</span>
-            </template>
-            <template v-for="(i, sub) in item.children">
-              <el-menu-item v-if="!i.hidden" :key="sub" :index="item.path + '/' + i.path">{{
-                i.name
-              }}</el-menu-item>
-            </template>
-
-            >
-          </el-submenu>
-        </template>
-        <template v-else>
-          <el-menu-item :index="item.path" :key="index">{{ item.name }}</el-menu-item>
-        </template>
-      </template>
+      <SidebarItem ></SidebarItem>
     </el-menu>
   </div>
 </template>
 
 <script>
-// import SidebarItem from './SidebarItem';
+import SidebarItem from './commponent/SidebarItem';
+// 使用scss变量的形式:export引入
+import variables from '@/styles/variables.scss';
 import { mapGetters } from 'vuex';
 export default {
   computed: {
+    variables() {
+      return variables;
+    },
     ...mapGetters(['sidebar']),
     chooseActive() {
       const route = this.$route;
@@ -55,23 +43,19 @@ export default {
       return path;
     },
   },
+
   data() {
     return {
       routerList: [],
-      // chooseActive: 'iceVenueMaintain',
+      routers:[]
     };
   },
-  watch: {
-    // chooseActive(oldval, newval) {
-    // console.log(oldval, newval);
-    // },
-  },
+
   created() {
-    this.$router.options.routes.splice(0, 2);
-    console.log(this.$router.options.routes);
+  
   },
   components: {
-    // SidebarItem,
+    SidebarItem,
   },
   methods: {
     handleOpen(key, keyPath) {

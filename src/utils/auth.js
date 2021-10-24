@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 
 const TokenKey = 'TokenName';
+const userId = 'userId';
 
 export const getToken = function () {
   return Cookies.get(TokenKey);
@@ -10,10 +11,16 @@ export const setToken = function (val) {
   return Cookies.set(TokenKey, val, { expires: 1 });
 };
 
-export const removeToken = function () {
+export const remove = function () {
   Cookies.remove(TokenKey);
+  Cookies.remove(userId);
 };
-
+export const setUserId = function(id) {
+    return Cookies.set (userId,id)
+}
+export const getUserId = function() {
+    return Cookies.get (userId)
+}
 // /**
 //  * setToken过期时间
 //  * @param deposit 存入时间

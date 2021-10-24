@@ -2,7 +2,8 @@
  * 这里是为了统一管理用户方面的所有内容，就将token拿到这里了，其实直接setToken在外面也可以
 
  */
-import { getToken, setToken, removeToken } from '@/utils/auth';
+import { getToken, setToken, remove ,setUserId} from '@/utils/auth';
+
 import { ApiUrl } from '@/api';
 
 const getDefaultState = function () {
@@ -10,6 +11,7 @@ const getDefaultState = function () {
     token: getToken(),
     name: '',
     avatar: '',
+    id:''
   };
 };
 
@@ -31,6 +33,10 @@ const mutations = {
   // 设置用户头像
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
+  },
+  // 设置用户id
+  SET_USER_ID: (state, id) => {
+    state.id = id;
   },
 };
 const actions = {
@@ -60,9 +66,11 @@ const actions = {
         .post('/userInfo')
         .then((res) => {
           if (res.code === 200) {
-            const { assistant, avatar } = res.data;
+            const { assistant, avatar,id } = res.data;
             commit('SET_NAME', assistant);
             commit('SET_AVATAR', avatar);
+            commit('SET_USER_ID', id);
+            setUserId(id)
             resolve(res.data);
           }
         })
@@ -74,7 +82,7 @@ const actions = {
   // 退出登陆
   loginOut({ commit }) {
     return new Promise((resolve, reject) => {
-      removeToken();
+      remove();
       commit('RESET_STATE');
       this._vm.request
         .post(ApiUrl.USER.LOGOUT)
@@ -91,7 +99,7 @@ const actions = {
   // 清除Token
   resetToken({ commit }) {
     return new Promise(() => {
-      removeToken();
+      remove();
       commit('RESET_STATE');
     });
   },
