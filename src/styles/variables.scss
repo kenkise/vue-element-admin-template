@@ -1,0 +1,12 @@
+//菜单背景色
+$base-menu-background: #282c34;
+// 菜单文字颜色
+$base-menu-color:hsla(0,0%,100%,);
+// 菜单文字选中颜色
+$base-menu-color-active:hsla(0,0%,100%,);
+
+:export{
+  menu-color:$base-menu-color;
+  menu-color-active:$base-menu-color-active;
+  menu-background:$base-menu-background
+}
