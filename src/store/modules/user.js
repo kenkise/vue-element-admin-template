@@ -2,7 +2,7 @@
  * 这里是为了统一管理用户方面的所有内容，就将token拿到这里了，其实直接setToken在外面也可以
 
  */
-import { getToken, setToken, remove ,setUserId} from '@/utils/auth';
+import { getToken, setToken, remove, setUserId } from '@/utils/auth';
 
 import { ApiUrl } from '@/api';
 
@@ -11,7 +11,7 @@ const getDefaultState = function () {
     token: getToken(),
     name: '',
     avatar: '',
-    id:''
+    id: '',
   };
 };
 
@@ -66,11 +66,11 @@ const actions = {
         .post('/userInfo')
         .then((res) => {
           if (res.code === 200) {
-            const { assistant, avatar,id } = res.data;
+            const { assistant, avatar, id } = res.data;
             commit('SET_NAME', assistant);
             commit('SET_AVATAR', avatar);
             commit('SET_USER_ID', id);
-            setUserId(id)
+            setUserId(id);
             resolve(res.data);
           }
         })

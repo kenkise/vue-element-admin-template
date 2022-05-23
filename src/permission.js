@@ -56,9 +56,7 @@ router.beforeResolve(async(to,from,next)=>{
             }else if(authentication == 'all'){
              accessRoutes=  await store.dispatch('routers/setRoutersAll',{id:store.getters.id})
             }
-            console.log(router);
             router.addRoutes(accessRoutes)
-            console.log(router);
             next({ ...to, replace: true })
             // let a
 
